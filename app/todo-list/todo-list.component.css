@@ -1,0 +1,12 @@
+p {
+  font-family: Lato;
+}
+
+.content {
+  width: 85%;
+}
+.container-general {
+  width: 60%;
+  padding: 40px;
+  border-style: solid;
+}
