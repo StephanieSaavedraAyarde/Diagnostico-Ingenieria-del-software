@@ -17,86 +17,91 @@ import { ITodo } from './todo';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent implements OnInit {
-  tit: any;
-  tit1: any;
-  des: any;
-  des1: any;
-
-  title = 'Tareas Pendientes';
-  public tsk: any[] = [];
-
   constructor(public dialog: MatDialog, private http: HttpClient) {}
 
-  dataLength: any = TodoData.length;
+  dataLength: any = tsk.length;
   newDataID: any;
   dataValue: any;
   msg: string = '';
   flag: string = '';
+  isDone: any = [];
 
   length = 5;
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   pageEvent: PageEvent;
+
   setPageSizeOptions(setPageSizeOptionsInput: string) {
     this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
   }
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.http.get<any>('http://localhost:3000/tasks').subscribe(data => {
+      tsk = data;
+      this.dataSource = new MatTableDataSource(tsk);
+      this.dataSource.paginator = this.paginator;
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
 
-  actionEdit(data) {
-    alert(TodoData[data - 1].todo);
-  }
-
   actionDelete(data) {
     const response = confirm('Esta seguro que quiere eliminar la tarea?');
     if (response) {
-      const posData = TodoData.map(pos => pos.id).indexOf(data);
+      let currentID = data;
       this.http
-        .delete<any>('http://localhost:3000/tasks/' + posData)
+        .delete<any>('http://localhost:3000/tasks/' + currentID)
         .subscribe(data => {
-          console.log('Ya llego');
+          console.log('REGISTRO ELIMINADO');
           this.reloadData();
         });
     }
   }
 
   actionComplete(data) {
-    let currentID = data - 1;
+    let currentID = data;
     this.http
       .put<any>(
         'http://localhost:3000/tasks/' + currentID + '?status=COMPLETED',
         ''
       )
       .subscribe(data => {
-        console.log('Ya llego');
-        window.location.reload();
+        console.log('Cambio de estado a COMPLETED');
       });
+    this.isDone[currentID] = true;
+    console.log(data[currentID]);
   }
 
   actionRefresh(data) {
-    let currentID = data - 1;
-    TodoData[currentID].isDone = true;
+    let currentID = data;
+    this.http
+      .put<any>(
+        'http://localhost:3000/tasks/' + currentID + '?status=PENDING',
+        ''
+      )
+      .subscribe(data => {
+        console.log('Cambio de estado a PENDING');
+      });
+    this.isDone[currentID] = false;
+    console.log(data[currentID]);
   }
 
   openDialog(data): void {
     let currentID = data - 1;
-
-    this.newDataID = Math.max.apply(Math, TodoData.map(newID => newID.id));
+    this.newDataID = Math.max.apply(Math, tsk.map(newID => newID.id));
 
     if (!data) {
       this.dataValue = {
         id: this.newDataID + 1,
-        todo: '',
-        level: '',
-        isDone: true
+        title: '',
+        detail: '',
+        status: ''
       };
     } else {
-      this.dataValue = TodoData[currentID];
+      this.dataValue = tsk[currentID];
     }
 
     let dialogRef = this.dialog.open(DialogAddTodo, {
@@ -109,21 +114,23 @@ export class TodoListComponent implements OnInit {
         if (!data) {
           this.http
             .post<any>('http://localhost:3000/tasks', {
-              title: result.todo,
-              detail: result.level
+              title: result.title,
+              detail: result.detail,
+              status: 'PENDING'
             })
             .subscribe(data => {
-              this.tsk.push(result);
+              console.log('YA SE GUARDO EN EL BACKEND');
+              this.reloadData();
             });
         } else {
           this.http
-            .put<any>('http://localhost:3000/tasks/' + currentID, {
-              title: result.todo,
-              detail: result.level
+            .put<any>('http://localhost:3000/tasks/' + data, {
+              title: result.title,
+              detail: result.detail
             })
             .subscribe(data => {
-              console.log('Ya llego');
-              window.location.reload();
+              console.log('YA SE ACTUALIZO EN EL BACKEND');
+              this.reloadData();
             });
         }
       }
@@ -131,12 +138,15 @@ export class TodoListComponent implements OnInit {
   }
 
   reloadData() {
-    this.dataSource = new MatTableDataSource(TodoData);
-    this.dataSource.paginator = this.paginator;
+    this.http.get<any>('http://localhost:3000/tasks').subscribe(data => {
+      tsk = data;
+      this.dataSource = new MatTableDataSource(tsk);
+      this.dataSource.paginator = this.paginator;
+    });
   }
 
   displayedColumns = ['todo', 'action'];
-  dataSource = new MatTableDataSource(TodoData);
+  dataSource = new MatTableDataSource(tsk);
 }
 
 @Component({
@@ -154,17 +164,4 @@ export class DialogAddTodo {
   }
 }
 
-var TodoData: ITodo[] = [
-  {
-    id: 1,
-    todo: 'Completar Primera Evaluacion',
-    level: 'Instalar Sakila y practicar consultas',
-    isDone: true
-  },
-  {
-    id: 2,
-    todo: 'Programar segunda evaluacion',
-    level: 'Programar la interfaz web',
-    isDone: true
-  }
-];
+var tsk: ITodo[] = [];
