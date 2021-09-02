@@ -12,84 +12,47 @@
     </button>
   </div>
 
-  <mat-table #table [dataSource]="dataSource" class="table content">
-    <ng-container matColumnDef="todo">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell
-        *matCellDef="let todoData"
-        style="width: 80%; padding-top: 15px; padding-bottom: 15px"
-        id="data"
-      >
-        <b style="font-size:18px">{{todoData.todo}}</b>
-        <br /><br />
-        {{todoData.level}}
-      </mat-cell>
-    </ng-container>
+  <div class="content" role="main">
+    <div id="resp">
+      <table class="table">
+        <tbody>
+          <tr *ngFor="let task of tsk">
+            <td>
+              <b>{{task.title}}</b>
+              <br>{{task.detail}}
+            </td>
+            <div *ngIf="task.status==='PENDING'">
+              <td>
+                <button (click)="Complete(task.id)" class="botones-general" style="font-size:23px; background-color: #3498DB; color: white">
+                  Completar
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" data-toggle="modal" data-target="#myModal1" class="botones-general" style="font-size:23px; background-color: #F4D03F ; color: white">
+                  Editar
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button  (click)="delete(task.id)" class="botones-general" style="font-size:23px; background-color: #E74C3C; color: white">Eliminar</button>
+              </td>
+            </div>
+            <div *ngIf="task.status==='COMPLETED'">
+              <td> </td>
+              <td>
+                <h4>Tarea Competa! &nbsp;&nbsp;&nbsp;
+                  <button>
+                    <img src="https://cdn3.iconfinder.com/data/icons/social-messaging-ui-color-line/254000/75-512.png" alt="100" width="35" (click)="ReStart(task.id)"/>
+                  </button>
+                </h4>
+              </td>
 
-    <!-- Action Column -->
-    <ng-container matColumnDef="action">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let todoData" style="width: 30%;">
-        <button
-          mat-button
-          mat-raised-button
-          color="primary"
-          (click)="actionComplete(todoData.id)"
-          type="button"
-          *ngIf="todoData.isDone"
-        >
-          Completar</button
-        >&nbsp;&nbsp;&nbsp;
-        <button
-          mat-button
-          mat-raised-button
-          color="accent"
-          (click)="openDialog(todoData.id)"
-          type="button"
-          *ngIf="todoData.isDone"
-        >
-          Editar</button
-        >&nbsp;&nbsp;&nbsp;
-        <button
-          mat-button
-          mat-raised-button
-          color="warn"
-          (click)="actionDelete(todoData.id)"
-          type="button"
-          *ngIf="todoData.isDone"
-        >
-          Eliminar
-        </button>
-        <h4 *ngIf="!todoData.isDone">
-          Tarea Competa! &nbsp;&nbsp;&nbsp;
-          <button
-            mat-button
-            mat-raised-button
-            color="warn"
-            (click)="actionRefresh(todoData.id)"
-            type="button"
-            *ngIf="!todoData.isDone"
-            class="fas fa-redo"
-          >
-            <i
-              (click)="actionRefresh(todoData.id)"
-              class="fa fa-pencil-square-o"
-              aria-hidden="true"
-            ></i>
-          </button>
-        </h4>
-      </mat-cell>
-    </ng-container>
+            </div>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
   <br />
-  <mat-paginator
-    [length]="length"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    (page)="pageEvent = $event"
-  >
+  <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+    (page)="pageEvent = $event">
   </mat-paginator>
 </div>
