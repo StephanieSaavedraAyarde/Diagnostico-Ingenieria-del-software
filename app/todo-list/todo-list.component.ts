@@ -25,6 +25,7 @@ export class TodoListComponent implements OnInit {
   msg: string = '';
   flag: string = '';
   isDone: any = [];
+  isLogin: any;
 
   length = 5;
   pageSize = 10;
@@ -183,6 +184,10 @@ export class TodoListComponent implements OnInit {
     });
   }
 
+  //////////////////////////////////////////////////////////////////////
+  //LOGIN
+  //////////////////////////////////////////////////////////////////////
+
   Login(data): void {
     if (!data) {
       this.dataValue = {
@@ -209,12 +214,17 @@ export class TodoListComponent implements OnInit {
               console.log('VERIFICANDO EN EL BACKEND');
               localStorage.setItem('token', data.token);
               console.log(data.token);
+              this.isLogin = false;
             });
         }
         console.log(result.username);
         console.log(result.password);
       }
     });
+  }
+
+  logout(): void {
+    this.isLogin = true;
   }
 
   displayedColumns = ['todo', 'action'];

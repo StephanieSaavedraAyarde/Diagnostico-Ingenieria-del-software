@@ -1,5 +1,14 @@
 <!--TASKS-->
-<div class="example-container container-general">
+<div class="example-container container-general" *ngIf="!isLogin">
+  <button
+    (click)="logout()"
+    mat-button
+    mat-raised-button
+    color="primary"
+    style="font-family: calibri; font-size: 18px"
+  >
+    Log Out.
+  </button>
   <h1 style="font-family: calibri;font-size: 40px">Tareas Pendientes.</h1>
   <div class="example-header">
     <button
@@ -97,7 +106,7 @@
 </div>
 
 <!--LOGIN-->
-<div class="example-container container-general centrado">
+<div class="example-container container-general-login centrado" *ngIf="isLogin">
   <h1 style="font-family: calibri;font-size: 40px">
     ¡Welcome to Task Manager!
   </h1>
