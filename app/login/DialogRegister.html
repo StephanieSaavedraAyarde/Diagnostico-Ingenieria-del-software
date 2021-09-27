@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>Register new user to our Task Manager!</h1>
+<div mat-dialog-content>
+  <mat-form-field style="width: 400px">
+    <input matInput [(ngModel)]="data.username" placeholder="Username" />
+  </mat-form-field>
+  <mat-form-field style="width: 400px; height: 100px">
+    <input
+      type="password"
+      matInput
+      [(ngModel)]="data.password"
+      placeholder="Password"
+    />
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button mat-raised-button [mat-dialog-close]="data">
+    Register
+  </button>
+</div>
