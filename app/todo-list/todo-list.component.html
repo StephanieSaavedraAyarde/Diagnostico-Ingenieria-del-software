@@ -1,4 +1,4 @@
-<div class="example-container container-general ">
+<div class="example-container container-general">
   <h1 style="font-family: calibri;font-size: 40px">Tareas Pendientes.</h1>
   <div class="example-header">
     <button
@@ -15,10 +15,14 @@
   <mat-table #table [dataSource]="dataSource" class="table content">
     <ng-container matColumnDef="todo">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let todoData" style="width: 80%; padding-top: 15px; padding-bottom: 15px" id="data">
-        <b style="font-size:18px">{{todoData.title}}</b>
+      <mat-cell
+        *matCellDef="let todoData"
+        style="width: 80%; padding-top: 15px; padding-bottom: 15px"
+        id="data"
+      >
+        <b style="font-size:18px">{{ todoData.title }}</b>
         <br /><br />
-        {{todoData.detail}}
+        {{ todoData.detail }}
       </mat-cell>
     </ng-container>
 
@@ -34,7 +38,8 @@
           type="button"
           *ngIf="!isDone[todoData.id]"
         >
-          Completar</button>&nbsp;&nbsp;&nbsp;
+          Completar</button
+        >&nbsp;&nbsp;&nbsp;
         <button
           mat-button
           mat-raised-button
@@ -43,7 +48,8 @@
           type="button"
           *ngIf="!isDone[todoData.id]"
         >
-          Editar</button>&nbsp;&nbsp;&nbsp;
+          Editar</button
+        >&nbsp;&nbsp;&nbsp;
         <button
           mat-button
           mat-raised-button
@@ -76,11 +82,15 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 
   <br />
-  <mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
-    (page)="pageEvent = $event">
+  <mat-paginator
+    [length]="length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="pageEvent = $event"
+  >
   </mat-paginator>
 </div>

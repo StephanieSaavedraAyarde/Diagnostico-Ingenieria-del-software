@@ -14,7 +14,7 @@ import {
   MatPaginatorModule,
   MatCheckboxModule,
   MatSelectModule,
-  MatDialogModule
+  MatDialogModule,
 } from '@angular/material';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,8 +23,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import {
   TodoListComponent,
-  DialogAddTodo
+  DialogAddTodo,
 } from './todo-list/todo-list.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   imports: [
@@ -45,11 +47,11 @@ import {
     MatSelectModule,
     MatDialogModule,
 
-    HttpModule
+    HttpModule,
   ],
   declarations: [AppComponent, TodoListComponent, DialogAddTodo],
   bootstrap: [AppComponent],
   entryComponents: [DialogAddTodo],
-  providers: []
+  providers: [],
 })
 export class AppModule {}
