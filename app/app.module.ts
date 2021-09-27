@@ -49,7 +49,13 @@ import { RegisterComponent } from './register/register.component';
 
     HttpModule,
   ],
-  declarations: [AppComponent, TodoListComponent, DialogAddTodo],
+  declarations: [
+    AppComponent,
+    TodoListComponent,
+    DialogAddTodo,
+    RegisterComponent,
+    LoginComponent,
+  ],
   bootstrap: [AppComponent],
   entryComponents: [DialogAddTodo],
   providers: [],
