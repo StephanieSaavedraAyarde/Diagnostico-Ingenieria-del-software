@@ -24,12 +24,9 @@ import { AppComponent } from './app.component';
 import {
   TodoListComponent,
   DialogAddTodo,
-} from './todo-list/todo-list.component';
-import {
-  LoginComponent,
   DialogLogin,
   DialogRegister,
-} from './login/login.component';
+} from './todo-list/todo-list.component';
 
 @NgModule({
   imports: [
@@ -56,7 +53,6 @@ import {
     AppComponent,
     TodoListComponent,
     DialogAddTodo,
-    LoginComponent,
     DialogLogin,
     DialogRegister,
   ],
