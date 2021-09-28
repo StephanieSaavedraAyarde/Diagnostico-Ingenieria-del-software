@@ -53,7 +53,6 @@ export class TodoListComponent implements OnInit {
         tsk = data;
         this.dataSource = new MatTableDataSource(tsk);
         this.dataSource.paginator = this.paginator;
-        this.reloadData();
       });
   }
 
@@ -78,7 +77,7 @@ export class TodoListComponent implements OnInit {
         })
         .subscribe((data) => {
           console.log('REGISTRO ELIMINADO');
-          this.reloadData();
+          window.location.reload();
         });
     }
   }
