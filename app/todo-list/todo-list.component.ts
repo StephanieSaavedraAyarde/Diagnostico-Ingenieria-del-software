@@ -99,7 +99,7 @@ export class TodoListComponent implements OnInit {
       .subscribe((data) => {
         console.log('Cambio de estado a COMPLETED');
       });
-    this.isDone[currentID] = true;
+    this.isDone[data] = true;
     console.log(data[currentID]);
   }
 
