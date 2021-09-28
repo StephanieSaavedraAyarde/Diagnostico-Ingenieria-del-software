@@ -44,9 +44,9 @@
           mat-button
           mat-raised-button
           color="primary"
-          (click)="actionComplete(todoData.id)"
+          (click)="actionComplete(todoData.task_id)"
           type="button"
-          *ngIf="!isDone[todoData.id]"
+          *ngIf="!isDone[todoData.task_id]"
         >
           Completar</button
         >&nbsp;&nbsp;&nbsp;
@@ -54,9 +54,9 @@
           mat-button
           mat-raised-button
           color="accent"
-          (click)="openDialog(todoData.id)"
+          (click)="openDialog(todoData.task_id)"
           type="button"
-          *ngIf="!isDone[todoData.id]"
+          *ngIf="!isDone[todoData.task_id]"
         >
           Editar</button
         >&nbsp;&nbsp;&nbsp;
@@ -64,13 +64,13 @@
           mat-button
           mat-raised-button
           color="warn"
-          (click)="actionDelete(todoData.id)"
+          (click)="actionDelete(todoData.task_id)"
           type="button"
           *ngIf="!isDone[todoData.task_id]"
         >
           Eliminar
         </button>
-        <h4 *ngIf="isDone[todoData.id]">
+        <h4 *ngIf="isDone[todoData.task_id]">
           Tarea Competa! &nbsp;&nbsp;&nbsp;
           <button
             mat-button
