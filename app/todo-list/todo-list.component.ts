@@ -53,6 +53,7 @@ export class TodoListComponent implements OnInit {
         tsk = data;
         this.dataSource = new MatTableDataSource(tsk);
         this.dataSource.paginator = this.paginator;
+        this.reloadData();
       });
   }
 
@@ -72,7 +73,7 @@ export class TodoListComponent implements OnInit {
         Authorization: tok,
       });
       this.http
-        .delete<any>('http://localhost:3000/tasks/' + currentID, {
+        .delete<any>('http://localhost:3000/tasks/' + data, {
           headers: headers,
         })
         .subscribe((data) => {
