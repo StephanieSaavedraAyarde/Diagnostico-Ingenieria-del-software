@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   MatDialog,
   MatDialogRef,
@@ -40,11 +40,20 @@ export class TodoListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   ngOnInit() {
-    this.http.get<any>('http://localhost:3000/tasks').subscribe((data) => {
-      tsk = data;
-      this.dataSource = new MatTableDataSource(tsk);
-      this.dataSource.paginator = this.paginator;
+    var tok: string;
+    console.log(localStorage.getItem('token'));
+    tok = localStorage.getItem('token')!;
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: tok,
     });
+    this.http
+      .get<any>('http://localhost:3000/tasks', { headers: headers })
+      .subscribe((data) => {
+        tsk = data;
+        this.dataSource = new MatTableDataSource(tsk);
+        this.dataSource.paginator = this.paginator;
+      });
   }
 
   ngAfterViewInit() {
@@ -55,8 +64,17 @@ export class TodoListComponent implements OnInit {
     const response = confirm('Esta seguro que quiere eliminar la tarea?');
     if (response) {
       let currentID = data;
+      var tok: string;
+      console.log(localStorage.getItem('token'));
+      tok = localStorage.getItem('token')!;
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: tok,
+      });
       this.http
-        .delete<any>('http://localhost:3000/tasks/' + currentID)
+        .delete<any>('http://localhost:3000/tasks/' + currentID, {
+          headers: headers,
+        })
         .subscribe((data) => {
           console.log('REGISTRO ELIMINADO');
           this.reloadData();
@@ -66,10 +84,17 @@ export class TodoListComponent implements OnInit {
 
   actionComplete(data) {
     let currentID = data;
+    var tok: string;
+    console.log(localStorage.getItem('token'));
+    tok = localStorage.getItem('token')!;
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: tok,
+    });
     this.http
       .put<any>(
         'http://localhost:3000/tasks/' + currentID + '?status=COMPLETED',
-        ''
+        { headers: headers }
       )
       .subscribe((data) => {
         console.log('Cambio de estado a COMPLETED');
@@ -80,10 +105,17 @@ export class TodoListComponent implements OnInit {
 
   actionRefresh(data) {
     let currentID = data;
+    var tok: string;
+    console.log(localStorage.getItem('token'));
+    tok = localStorage.getItem('token')!;
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: tok,
+    });
     this.http
       .put<any>(
         'http://localhost:3000/tasks/' + currentID + '?status=PENDING',
-        ''
+        { headers: headers }
       )
       .subscribe((data) => {
         console.log('Cambio de estado a PENDING');
@@ -118,22 +150,44 @@ export class TodoListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (!data) {
+          var tok: string;
+          console.log(localStorage.getItem('token'));
+          tok = localStorage.getItem('token')!;
+          let headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: tok,
+          });
           this.http
-            .post<any>('http://localhost:3000/tasks', {
-              title: result.title,
-              detail: result.detail,
-              status: 'PENDING',
-            })
+            .post<any>(
+              'http://localhost:3000/tasks',
+              {
+                title: result.title,
+                detail: result.detail,
+                status: 'PENDING',
+              },
+              { headers: headers }
+            )
             .subscribe((data) => {
               console.log('YA SE GUARDO EN EL BACKEND');
               this.reloadData();
             });
         } else {
+          var tok: string;
+          console.log(localStorage.getItem('token'));
+          tok = localStorage.getItem('token')!;
+          let headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: tok,
+          });
           this.http
-            .put<any>('http://localhost:3000/tasks/' + data, {
-              title: result.title,
-              detail: result.detail,
-            })
+            .put<any>(
+              'http://localhost:3000/tasks/' + data,
+              {
+                title: result.title,
+                detail: result.detail,
+              },
+              { headers: headers }
+            )
             .subscribe((data) => {
               console.log('YA SE ACTUALIZO EN EL BACKEND');
               this.reloadData();

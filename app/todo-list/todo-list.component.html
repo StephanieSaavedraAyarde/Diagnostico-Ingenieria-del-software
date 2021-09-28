@@ -66,7 +66,7 @@
           color="warn"
           (click)="actionDelete(todoData.id)"
           type="button"
-          *ngIf="!isDone[todoData.id]"
+          *ngIf="!isDone[todoData.task_id]"
         >
           Eliminar
         </button>
@@ -76,13 +76,13 @@
             mat-button
             mat-raised-button
             color="warn"
-            (click)="actionRefresh(todoData.id)"
+            (click)="actionRefresh(todoData.task_id)"
             type="button"
             *ngIf="isDone[todoData.id]"
             class="fas fa-redo"
           >
             <i
-              (click)="actionRefresh(todoData.id)"
+              (click)="actionRefresh(todoData.task_id)"
               class="fa fa-pencil-square-o"
               aria-hidden="true"
             ></i>
